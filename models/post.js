@@ -2,29 +2,38 @@ var mongoose = require('mongoose')
 
 var postsSchema = mongoose.Schema(
   {
-    "post_name" : {type:String,required:true},
-    "img_url" : {type:Array},
-    "desc" : {type:Array,required:true},
-    "tag" :{type:Array},
-    "time_created" : {type:Date,default:Date.now},
+    "postname" : {type:String,required:true},
+    "imgurl" : [{type:String}],
+    "description" : [{type:String}],
+    "tag" :[{type:String}],
+    "timecreate" : {type:Date,default:Date.now},
     "owner" : {
-      "id"   : {type:String},
+      "uid"   : {type:String},
       "name" : {type:String}
     },
-    "comment" : {
-        "desc" : {type:String},
-        "img_url" : {type:Array},
+    "comments" : [{
+        "description" : {type:String},
+        "imgurl" : [{type:String}],
         "owner" : {
-          "id"   : {type:String},
+          "uid"   : {type:String},
           "name" : {type:String}
         },
-        "time_created" : {type:Date,default:Date.now}
-    }
-}
-)
+        "timecreate" : {type:Date,default:Date.now}
+    }]
+})
 
 var Post = module.exports = mongoose.model('Post',postsSchema)
-
-module.exports.getPost = (callback,limit)=>{
+//Get Book
+module.exports.getPosts = (callback,limit)=>{
   Post.find(callback).limit(limit)
+}
+
+//get book from id
+module.exports.getPostById = (id,callback)=>{
+  Post.findById(id,callback)
+}
+
+//add post
+module.exports.newPost = (post,callback)=>{
+  Post.create(post,callback)
 }
