@@ -7,6 +7,7 @@ var postsSchema = mongoose.Schema(
     "description" : [{type:String}],
     "tag" :[{type:String}],
     "timecreate" : {type:Date,default:Date.now},
+    "timemodified" : {type:Date,default:Date.now},
     "owner" : {
       "uid"   : {type:String},
       "name" : {type:String}
@@ -14,11 +15,13 @@ var postsSchema = mongoose.Schema(
     "comments" : [{
         "description" : {type:String},
         "imgurl" : [{type:String}],
+        "timecreate" : {type:Date,default:Date.now},
+        "timemodified" : {type:Date,default:Date.now},
         "owner" : {
           "uid"   : {type:String},
           "name" : {type:String}
-        },
-        "timecreate" : {type:Date,default:Date.now}
+        }
+        
     }]
 })
 
@@ -36,4 +39,24 @@ module.exports.getPostById = (id,callback)=>{
 //add post
 module.exports.newPost = (post,callback)=>{
   Post.create(post,callback)
+}
+
+//update post
+module.exports.updatePost = (id,post,options,callback)=>{
+  var query = {_id: id}
+  var update = {
+    
+      postname : post.postname,
+      imgurl : post.imgurl,
+      description : post.description,
+      tag : post.tag,
+      timemodiflied : Date.now()
+  }
+  Post.findOneAndUpdate(query,update,options,callback)
+}
+
+//delete post
+module.exports.removePost = (id,callback)=>{
+  var query = { _id:id}
+  Post.remove(query,callback)
 }

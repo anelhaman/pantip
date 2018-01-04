@@ -36,5 +36,22 @@ app.post('/api/post/',(req,res)=>{
   })
 })
 
+app.put('/api/post/:_id',(req,res)=>{
+  var id = req.params._id
+  var post = req.body
+  Post.updatePost(id,post,{},(err,post)=>{
+    if(err) throw err
+    res.json(post)
+  })
+})
+
+app.delete('/api/post/:_id',(req,res)=>{
+  var id = req.params._id
+  Post.removePost(id,(err,post)=>{
+    if(err) throw err
+    res.json(post)
+  })
+})
+
 app.listen(3000)
 console.log("running on port 3000...")
